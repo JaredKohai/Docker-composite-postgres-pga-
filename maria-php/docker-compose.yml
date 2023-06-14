@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  database:
+    container_name: world-dbb
+    image: mariadb:jammy
+    ports:
+      - 3307:3306
+    volumes:
+      - world-db:/var/lib/mysql
+    environment:
+      - MYSQL_USER:"example-user"
+      - MYSQL_PASSWORD:"user-password"
+      - MARIADB_ROOT_PASSWORD=root-secret-password
+
+
+  phpmyadmin:
+    depends_on:
+      - database
+    container_name: phpmyadminn
+    image: phpmyadmin:5.2.1-apache
+    restart: always
+    ports:
+      - 8079:80
+    environment:
+      - PMA_ARBITRARY=1
+
+volumes:
+  world-db:
+    external: true
